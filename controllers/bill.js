@@ -1,3 +1,5 @@
+/* eslint-disable semi-spacing */
+/* eslint-disable linebreak-style */
 const { Bill } = require('../models');
 
 const getFileURL = (filePath) => `http://localhost:5678/${filePath}`;
@@ -6,7 +8,9 @@ const isPicture = (mimeType) => ['image/jpeg', 'image/jpg', 'image/png', 'image/
 
 const create = async (req, res) => {
   const { user } = req;
+
   if (!user) return res.status(401).send({ message: 'user must be authenticated' });
+
   try {
     const {
       name,
@@ -35,6 +39,9 @@ const create = async (req, res) => {
       filePath: isPicture(file.mimetype) ? file.path : 'null',
       amount,
     });
+
+    bill.dataValues.fileUrl = getFileURL(bill.filePath);
+
     return res.status(201).json(bill);
   } catch (err) {
     return res.status(500).send({ message: err.message });
